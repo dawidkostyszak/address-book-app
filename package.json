@@ -6,6 +6,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines" : {
+    "node" : "16.17.0"
+  },
   "dependencies": {
     "next": "latest",
     "react": "^18.2.0",
