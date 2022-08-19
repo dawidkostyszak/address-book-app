@@ -7,6 +7,8 @@ const Card = styled.div`
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  padding: 8px;
+  border-bottom: black 1px solid;
 `;
 
 const ContactDetails = styled.div`

@@ -61,3 +61,8 @@ export type Info = {
   page: number;
   version: string;
 };
+
+export type Response = {
+  results: ContactType[];
+  info: Info;
+};
