@@ -5,6 +5,11 @@ export const Title = styled.h1`
   margin: 0;
 `;
 
+export const Info = styled.h2`
+  font-size: 0.75rem;
+  margin: 0;
+`;
+
 export const Paragraph = styled.p`
   font-size: 0.625rem;
   margin: 0;

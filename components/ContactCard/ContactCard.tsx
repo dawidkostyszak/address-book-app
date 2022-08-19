@@ -9,6 +9,10 @@ const Card = styled.div`
   align-items: stretch;
   padding: 8px;
   border-bottom: black 1px solid;
+
+  &:last-of-type {
+    border: none;
+  }
 `;
 
 const ContactDetails = styled.div`
