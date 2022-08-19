@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
 import GlobalStyle from 'components/globalstyles';
+import Head from 'next/head';
 
 const theme: DefaultTheme = {
   colors: {
@@ -12,6 +13,11 @@ const theme: DefaultTheme = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <title>Address book app</title>
+        <meta name="description" content="Created by Dawid Kostyszak" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Component {...pageProps} />
