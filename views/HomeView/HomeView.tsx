@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { ContactCard } from 'components/ContactCard';
-import { Info, SearchField } from 'components/primitives';
+import { Info, SearchField, Link } from 'components/primitives';
 import { Error } from 'components/Error';
 
 import { useHome } from './useHome';
@@ -11,15 +11,14 @@ const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 500px;
 `;
 
 const Contacts = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   text-align: center;
   margin-bottom: 50px;
+  width: 500px;
 `;
 
 const Search = styled.div`
@@ -27,6 +26,8 @@ const Search = styled.div`
   top: 0;
   margin-bottom: 32px;
   width: 100%;
+  margin-right: 8px;
+  max-width: 400px;
 `;
 
 const SearchInfo = styled(Info)`
@@ -39,7 +40,7 @@ const DataInfo = styled(Info)`
   color: #6495edff;
 `;
 
-export const Loading = styled.div`
+const Loading = styled.div`
   &:after {
     content: ' .';
     animation: dots 1s steps(5, end) infinite;
@@ -65,6 +66,14 @@ export const Loading = styled.div`
   }
 `;
 
+const Filters = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: baseline;
+`;
+
 export const HomeView = () => {
   const {
     contacts,
@@ -87,20 +96,25 @@ export const HomeView = () => {
   return (
     <HomeContainer>
       {isLoading ? null : (
-        <Search>
-          <SearchField
-            id="search"
-            value={search}
-            onChange={handleSearch}
-            placeholder="Search"
-            onClear={handleClearSearch}
-          />
-          {isSearching ? (
-            <SearchInfo>
-              Loading new contacts is disabled while searching.
-            </SearchInfo>
-          ) : null}
-        </Search>
+        <Filters>
+          <Search>
+            <SearchField
+              id="search"
+              value={search}
+              onChange={handleSearch}
+              placeholder="Search"
+              onClear={handleClearSearch}
+            />
+            {isSearching ? (
+              <SearchInfo>
+                Loading new contacts is disabled while searching.
+              </SearchInfo>
+            ) : null}
+          </Search>
+          <Link href="/settings" passHref>
+            Go to settings
+          </Link>
+        </Filters>
       )}
       <Contacts>
         {isLoading

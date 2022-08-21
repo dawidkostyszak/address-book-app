@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { CheckboxField } from 'components/primitives';
+import { CheckboxField, Link } from 'components/primitives';
 import { NationalitiesTypes } from 'types/nationalities';
 import { useSettings } from './useSettings';
 
@@ -42,6 +42,9 @@ export const SettingsView = () => {
         label="GB"
         checked={nationalities[NationalitiesTypes.GB]}
       />
+      <Link href="/" passHref>
+        Go to search
+      </Link>
     </SettingsContainer>
   );
 };
