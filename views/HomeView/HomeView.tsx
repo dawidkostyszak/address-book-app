@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { ContactCard } from 'components/ContactCard';
-import { Info, Field } from 'components/primitives';
+import { Info, SearchField } from 'components/primitives';
 import { Error } from 'components/Error';
 
 import { useHome } from './useHome';
@@ -88,7 +88,8 @@ export const HomeView = () => {
     <HomeContainer>
       {isLoading ? null : (
         <Search>
-          <Field
+          <SearchField
+            id="search"
             value={search}
             onChange={handleSearch}
             placeholder="Search"

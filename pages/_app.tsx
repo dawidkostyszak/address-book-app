@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
 import GlobalStyle from 'components/globalstyles';
 import Head from 'next/head';
+import { NationalitiesContextProvider } from 'contexts/NationalitiesContext';
 
 const theme: DefaultTheme = {
   colors: {
@@ -20,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Component {...pageProps} />
+        <NationalitiesContextProvider>
+          <Component {...pageProps} />
+        </NationalitiesContextProvider>
       </ThemeProvider>
     </>
   );
