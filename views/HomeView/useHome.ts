@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite';
 import { ContactType, Response } from 'types/contact';
 
 const PAGE_SIZE = 50;
-const MAX_RECORDS = 1000;
+const MAX_RECORDS = 100;
 
 const fetcher = (url: string) =>
   fetch(url)
@@ -20,7 +20,6 @@ export const useHome = () => {
   const isSearching = Boolean(search);
   const contacts = useMemo(() => (data ? [].concat(...data) : []), [data]);
   const isLoading = !data && !error;
-  const isEmpty = data?.[0]?.length === 0;
   const isFetching =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
 
@@ -63,9 +62,9 @@ export const useHome = () => {
   return {
     contacts: filteredContacts,
     isLoading,
+    isError: Boolean(error),
     isFetching,
-    isReachingEnd:
-      isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE),
+    isReachingEnd: contacts.length === MAX_RECORDS,
     isSearching,
     search,
     handleSearch,

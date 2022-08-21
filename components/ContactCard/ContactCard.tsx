@@ -9,6 +9,7 @@ const Card = styled.div`
   align-items: stretch;
   padding: 8px;
   border-bottom: black 1px solid;
+  text-align: left;
 
   &:last-of-type {
     border: none;
