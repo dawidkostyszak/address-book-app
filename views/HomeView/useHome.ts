@@ -8,7 +8,12 @@ const PAGE_SIZE = 50;
 const MAX_RECORDS = 1000;
 
 const fetcher = (url: string) =>
-  fetch(url)
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'access-control-allow-origin': '*',
+    },
+  })
     .then((res) => res.json())
     .then((json: Response) => json.results);
 
