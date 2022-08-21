@@ -2,20 +2,31 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { ContactType, Response } from 'types/contact';
+import { useNationalities } from 'contexts/NationalitiesContext';
 
 const PAGE_SIZE = 50;
-const MAX_RECORDS = 100;
+const MAX_RECORDS = 1000;
 
 const fetcher = (url: string) =>
   fetch(url)
     .then((res) => res.json())
     .then((json: Response) => json.results);
-const getUrl = (pageIndex) =>
-  `https://randomuser.me/api/?page=${pageIndex}&results=${PAGE_SIZE}`;
 
 export const useHome = () => {
+  const { nationalities } = useNationalities();
+  const natQuery = Object.entries(nationalities)
+    .filter(([key, value]) => Boolean(value))
+    .map(([key]) => key.toLowerCase())
+    .join(',');
+
   const [search, setSearch] = useState('');
-  const { data, error, size, setSize } = useSWRInfinite(getUrl, fetcher);
+  const { data, error, size, setSize } = useSWRInfinite(
+    (pageIndex) =>
+      `https://randomuser.me/api/?page=${pageIndex + 1}&results=${PAGE_SIZE}${
+        natQuery.length ? `&nat=${natQuery}` : ''
+      }`,
+    fetcher
+  );
 
   const isSearching = Boolean(search);
   const contacts = useMemo(() => (data ? [].concat(...data) : []), [data]);
