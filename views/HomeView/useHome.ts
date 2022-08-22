@@ -7,8 +7,9 @@ import { useNationalities } from 'contexts/NationalitiesContext';
 const PAGE_SIZE = 50;
 const MAX_RECORDS = 1000;
 
-const fetcher = ({ pageParam = 0, natQuery = '' }) =>
-  fetch(
+const fetcher = ({ pageParam = 0, queryKey }) => {
+  const { natQuery } = queryKey[1];
+  return fetch(
     `api/?page=${pageParam}&results=${PAGE_SIZE}${
       natQuery.length ? `&nat=${natQuery}` : ''
     }`,
@@ -22,6 +23,7 @@ const fetcher = ({ pageParam = 0, natQuery = '' }) =>
   )
     .then((res) => res.json())
     .then((json: Response) => json.results);
+};
 
 export const useHome = () => {
   const { nationalities } = useNationalities();
