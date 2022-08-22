@@ -1,49 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useInfiniteQuery } from 'react-query';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { ContactType, Response } from 'types/contact';
-import { useNationalities } from 'contexts/NationalitiesContext';
-
-const PAGE_SIZE = 50;
-const MAX_RECORDS = 1000;
-
-const fetcher = ({ pageParam = 0, queryKey }) => {
-  const { natQuery } = queryKey[1];
-  return fetch(
-    `api/?page=${pageParam}&results=${PAGE_SIZE}${
-      natQuery.length ? `&nat=${natQuery}` : ''
-    }`,
-    {
-      mode: 'cors',
-      method: 'GET',
-      headers: {
-        'access-control-allow-origin': '*',
-      },
-    }
-  )
-    .then((res) => res.json())
-    .then((json: Response) => json.results);
-};
+import { useContacts, MAX_RECORDS } from 'hooks/useContacts';
 
 export const useHome = () => {
-  const { nationalities } = useNationalities();
-  const natQuery = Object.entries(nationalities)
-    .filter(([key, value]) => Boolean(value))
-    .map(([key]) => key.toLowerCase())
-    .join(',');
-
   const [search, setSearch] = useState('');
-
-  const { data, isLoading, isError, isFetching, fetchNextPage } =
-    useInfiniteQuery(['contacts', { natQuery }], fetcher, {
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
-    });
-
-  const isSearching = Boolean(search);
-  const contacts = useMemo(
-    () => (data ? [].concat(...data.pages) : []),
-    [data]
-  );
+  const {
+    contacts,
+    isLoading,
+    isSearching,
+    isFetching,
+    isError,
+    isReachingEnd,
+    fetchNextPage,
+  } = useContacts({ search });
 
   const isScrolling = useCallback(async () => {
     if (
@@ -73,20 +42,12 @@ export const useHome = () => {
     setSearch('');
   };
 
-  const filteredContacts = isSearching
-    ? contacts.filter(({ name: { first, last } }: ContactType) =>
-        `${first.toLowerCase()} ${last.toLowerCase()}`.includes(
-          search.toLowerCase()
-        )
-      )
-    : contacts;
-
   return {
-    contacts: filteredContacts,
+    contacts,
     isLoading,
     isError,
     isFetching,
-    isReachingEnd: contacts.length === MAX_RECORDS,
+    isReachingEnd,
     isSearching,
     search,
     handleSearch,
