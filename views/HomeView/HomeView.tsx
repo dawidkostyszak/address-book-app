@@ -22,8 +22,6 @@ const Contacts = styled.div`
 `;
 
 const Search = styled.div`
-  position: sticky;
-  top: 0;
   margin-bottom: 32px;
   width: 100%;
   margin-right: 8px;
@@ -67,11 +65,20 @@ const Loading = styled.div`
 `;
 
 const Filters = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: center;
   align-items: baseline;
+  background-color: #ffffff;
+`;
+
+const LinkContainer = styled.div`
+  position: absolute;
+  right: 32px;
+  padding: 8px;
 `;
 
 export const HomeView = () => {
@@ -95,27 +102,27 @@ export const HomeView = () => {
 
   return (
     <HomeContainer>
-      {isLoading ? null : (
-        <Filters>
-          <Search>
-            <SearchField
-              id="search"
-              value={search}
-              onChange={handleSearch}
-              placeholder="Search"
-              onClear={handleClearSearch}
-            />
-            {isSearching ? (
-              <SearchInfo>
-                Loading new contacts is disabled while searching.
-              </SearchInfo>
-            ) : null}
-          </Search>
+      <Filters>
+        <Search>
+          <SearchField
+            id="search"
+            value={search}
+            onChange={handleSearch}
+            placeholder="Search"
+            onClear={handleClearSearch}
+          />
+          {isSearching ? (
+            <SearchInfo>
+              Loading new contacts is disabled while searching.
+            </SearchInfo>
+          ) : null}
+        </Search>
+        <LinkContainer>
           <Link href="/settings" passHref>
             Go to settings
           </Link>
-        </Filters>
-      )}
+        </LinkContainer>
+      </Filters>
       <Contacts>
         {isLoading
           ? null
