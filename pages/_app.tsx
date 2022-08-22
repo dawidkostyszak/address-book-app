@@ -1,8 +1,12 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
-import GlobalStyle from 'components/globalstyles';
 import Head from 'next/head';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+import GlobalStyle from 'components/globalstyles';
 import { NationalitiesContextProvider } from 'contexts/NationalitiesContext';
+
+const queryClient = new QueryClient();
 
 const theme: DefaultTheme = {
   colors: {
@@ -21,9 +25,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <NationalitiesContextProvider>
-          <Component {...pageProps} />
-        </NationalitiesContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <NationalitiesContextProvider>
+            <Component {...pageProps} />
+          </NationalitiesContextProvider>
+        </QueryClientProvider>
       </ThemeProvider>
     </>
   );

@@ -5,6 +5,14 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  rewrites: () => {
+    return [
+      {
+        source: '/api',
+        destination: 'https://randomuser.me/api',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

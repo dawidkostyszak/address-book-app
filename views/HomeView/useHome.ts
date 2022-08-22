@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import useSWRInfinite from 'swr/infinite';
+import { useInfiniteQuery } from 'react-query';
 
 import { ContactType, Response } from 'types/contact';
 import { useNationalities } from 'contexts/NationalitiesContext';
@@ -7,13 +7,19 @@ import { useNationalities } from 'contexts/NationalitiesContext';
 const PAGE_SIZE = 50;
 const MAX_RECORDS = 1000;
 
-const fetcher = (url: string) =>
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      'access-control-allow-origin': '*',
-    },
-  })
+const fetcher = ({ pageParam = 0, natQuery = '' }) =>
+  fetch(
+    `api/?page=${pageParam}&results=${PAGE_SIZE}${
+      natQuery.length ? `&nat=${natQuery}` : ''
+    }`,
+    {
+      mode: 'cors',
+      method: 'GET',
+      headers: {
+        'access-control-allow-origin': '*',
+      },
+    }
+  )
     .then((res) => res.json())
     .then((json: Response) => json.results);
 
@@ -25,19 +31,17 @@ export const useHome = () => {
     .join(',');
 
   const [search, setSearch] = useState('');
-  const { data, error, size, setSize } = useSWRInfinite(
-    (pageIndex) =>
-      `https://randomuser.me/api/?page=${pageIndex + 1}&results=${PAGE_SIZE}${
-        natQuery.length ? `&nat=${natQuery}` : ''
-      }`,
-    fetcher
-  );
+
+  const { data, isLoading, isError, isFetching, fetchNextPage } =
+    useInfiniteQuery(['contacts', { natQuery }], fetcher, {
+      getNextPageParam: (lastPage, pages) => pages.length + 1,
+    });
 
   const isSearching = Boolean(search);
-  const contacts = useMemo(() => (data ? [].concat(...data) : []), [data]);
-  const isLoading = !data && !error;
-  const isFetching =
-    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const contacts = useMemo(
+    () => (data ? [].concat(...data.pages) : []),
+    [data]
+  );
 
   const isScrolling = useCallback(async () => {
     if (
@@ -50,9 +54,9 @@ export const useHome = () => {
     }
 
     if (contacts.length < MAX_RECORDS) {
-      await setSize(size + 1);
+      await fetchNextPage();
     }
-  }, [contacts, size, setSize, isFetching, isSearching]);
+  }, [contacts, fetchNextPage, isFetching, isSearching]);
 
   useEffect(() => {
     window.addEventListener('scroll', isScrolling);
@@ -78,7 +82,7 @@ export const useHome = () => {
   return {
     contacts: filteredContacts,
     isLoading,
-    isError: Boolean(error),
+    isError,
     isFetching,
     isReachingEnd: contacts.length === MAX_RECORDS,
     isSearching,
