@@ -36,7 +36,7 @@ type UseContactsInput = {
   search?: string;
 };
 
-export const useContacts = ({ search }: UseContactsInput) => {
+export const useContacts = ({ search }: UseContactsInput = {}) => {
   const { nationalities } = useNationalities();
   const natQuery = Object.entries(nationalities)
     .filter(([key, value]) => Boolean(value))
@@ -48,17 +48,14 @@ export const useContacts = ({ search }: UseContactsInput) => {
       getNextPageParam: (lastPage, pages) => pages.length + 1,
     });
 
-  const isSearching = Boolean(search);
-
   const contacts = useMemo(
     () => (data ? [].concat(...data.pages) : []),
     [data]
   );
 
   return {
-    contacts: isSearching ? searchContacts(contacts, search) : contacts,
+    contacts: Boolean(search) ? searchContacts(contacts, search) : contacts,
     isLoading,
-    isSearching,
     isFetching,
     isError,
     isReachingEnd: contacts.length === MAX_RECORDS,
