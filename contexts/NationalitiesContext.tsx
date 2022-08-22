@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { NationalitiesTypes } from 'types/nationalities';
 
-const defaultValue = {
+export const defaultValue = {
   [NationalitiesTypes.CH]: false,
   [NationalitiesTypes.ES]: false,
   [NationalitiesTypes.FR]: false,
