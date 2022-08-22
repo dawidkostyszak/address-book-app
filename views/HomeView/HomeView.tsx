@@ -126,8 +126,15 @@ export const HomeView = () => {
       <Contacts>
         {isLoading
           ? null
-          : contacts.map((contact) => (
-              <ContactCard {...contact} key={contact.login.uuid} />
+          : contacts.map(({ picture, name, login, email }) => (
+              <ContactCard
+                thumbnail={picture.thumbnail}
+                firstName={name.first}
+                lastName={name.last}
+                username={login.username}
+                email={email}
+                key={login.uuid}
+              />
             ))}
         {isLoading || isFetching ? <Loading>Loading</Loading> : null}
         {isReachingEnd ? <DataInfo>End of users catalog</DataInfo> : null}

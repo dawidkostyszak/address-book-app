@@ -28,24 +28,31 @@ const ContactImage = styled.div`
   height: 50px;
 `;
 
-type ContactCardProps = ContactType;
+type ContactCardProps = {
+  thumbnail: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+};
 
 export const ContactCard = ({
-  picture,
-  name,
-  login,
+  thumbnail,
+  firstName,
+  lastName,
+  username,
   email,
 }: ContactCardProps) => (
   <Card>
     <ContactImage>
-      <Image src={picture.thumbnail} />
+      <Image src={thumbnail} alt={`${firstName} ${lastName}`} />
     </ContactImage>
     <ContactDetails>
       <Title>
-        {name.first} {name.last}
+        {firstName} {lastName}
       </Title>
       <Box>
-        <Paragraph>Username: {login.username}</Paragraph>
+        <Paragraph>Username: {username}</Paragraph>
         <Paragraph>Email: {email}</Paragraph>
       </Box>
     </ContactDetails>
