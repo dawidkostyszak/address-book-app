@@ -31,5 +31,5 @@ then go to http://localhost:3000.
 Run in terminal
 
 ```bash
-npm run unit
+npm run test
 ```
