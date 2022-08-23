@@ -7,12 +7,12 @@ export const useHome = () => {
   const {
     contacts,
     isLoading,
-    isSearching,
     isFetching,
     isError,
     isReachingEnd,
     fetchNextPage,
   } = useContacts({ search });
+  const isSearching = Boolean(search);
 
   const isScrolling = useCallback(async () => {
     if (
