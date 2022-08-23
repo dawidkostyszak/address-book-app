@@ -5,7 +5,7 @@ import { ContactType } from 'types/contact';
 import { Title, SubTitle } from 'components/primitives';
 
 type ContactDetailsModalProps = Omit<ModalProps, 'children'> & {
-  contact: ContactType;
+  contact: Pick<ContactType, 'location' | 'phone' | 'cell'>;
 };
 
 const DetailsRow = styled.div`
