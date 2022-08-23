@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ContactCard } from 'components/ContactCard';
 import { Info, SearchField, Link } from 'components/primitives';
 import { Error } from 'components/Error';
+import { ContactDetailsModal } from 'components/ContactDetailsModal';
 
 import { useHome } from './useHome';
 
@@ -90,6 +91,9 @@ export const HomeView = () => {
     isFetching,
     isSearching,
     isReachingEnd,
+    modalData,
+    handleOpenModal,
+    handleCloseModal,
     handleSearch,
     handleClearSearch,
   } = useHome();
@@ -126,19 +130,29 @@ export const HomeView = () => {
       <Contacts>
         {isLoading
           ? null
-          : contacts.map(({ picture, name, login, email }) => (
-              <ContactCard
-                thumbnail={picture.thumbnail}
-                firstName={name.first}
-                lastName={name.last}
-                username={login.username}
-                email={email}
-                key={login.uuid}
-              />
-            ))}
+          : contacts.map((contact) => {
+              const { picture, name, login, email } = contact;
+
+              return (
+                <ContactCard
+                  thumbnail={picture.thumbnail}
+                  firstName={name.first}
+                  lastName={name.last}
+                  username={login.username}
+                  email={email}
+                  key={login.uuid}
+                  onClick={() => handleOpenModal(contact)}
+                />
+              );
+            })}
         {isLoading || isFetching ? <Loading>Loading</Loading> : null}
         {isReachingEnd ? <DataInfo>End of users catalog</DataInfo> : null}
       </Contacts>
+      <ContactDetailsModal
+        contact={modalData}
+        isOpen={Boolean(modalData)}
+        onClose={handleCloseModal}
+      />
     </HomeContainer>
   );
 };

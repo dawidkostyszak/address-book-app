@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { ContactType } from 'types/contact';
 import { Image, Title, Paragraph, Box } from 'components/primitives';
 
-const Card = styled.div`
+const Card = styled.button`
   display: flex;
   flex-direction: row;
   align-items: stretch;
   padding: 8px;
+  border: none;
   border-bottom: black 1px solid;
   text-align: left;
+  background-color: #ffffff;
+  cursor: pointer;
 
   &:last-of-type {
     border: none;
@@ -34,6 +37,7 @@ type ContactCardProps = {
   lastName: string;
   username: string;
   email: string;
+  onClick: () => void;
 };
 
 export const ContactCard = ({
@@ -42,8 +46,9 @@ export const ContactCard = ({
   lastName,
   username,
   email,
+  onClick,
 }: ContactCardProps) => (
-  <Card>
+  <Card onClick={onClick}>
     <ContactImage>
       <Image src={thumbnail} alt={`${firstName} ${lastName}`} />
     </ContactImage>

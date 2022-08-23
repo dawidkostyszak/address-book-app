@@ -5,6 +5,12 @@ export const Title = styled.h1`
   margin: 0;
 `;
 
+export const SubTitle = styled.h2`
+  font-size: 0.75rem;
+  margin: 0;
+  font-weight: normal;
+`;
+
 export const Info = styled.h2`
   font-size: 0.75rem;
   margin: 0;

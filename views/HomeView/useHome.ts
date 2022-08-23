@@ -4,6 +4,7 @@ import { useContacts, MAX_RECORDS } from 'hooks/useContacts';
 
 export const useHome = () => {
   const [search, setSearch] = useState('');
+  const [modalData, setModalData] = useState(null);
   const {
     contacts,
     isLoading,
@@ -42,6 +43,14 @@ export const useHome = () => {
     setSearch('');
   };
 
+  const handleOpenModal = (contactDetails) => {
+    setModalData(contactDetails);
+  };
+
+  const handleCloseModal = () => {
+    setModalData(null);
+  };
+
   return {
     contacts,
     isLoading,
@@ -50,6 +59,9 @@ export const useHome = () => {
     isReachingEnd,
     isSearching,
     search,
+    modalData,
+    handleOpenModal,
+    handleCloseModal,
     handleSearch,
     handleClearSearch,
   };
